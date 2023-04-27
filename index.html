@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+	
+    <title>Lyrics Search</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Search for a Song</h1>
+      </header>
+      <form id="search-form">
+        <label for="song-name">Song Name:</label>
+        <input type="text" id="song-name" name="song-name">
+        <button type="submit">Search</button>
+      </form>
+      <div id="lyrics"></div>
+    </div>
+    <script>
+      const form = document.getElementById('search-form');
+      const lyricsDiv = document.getElementById('lyrics');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const searchTerm = document.getElementById('song-name').value;
+        fetch('http://localhost:3000/lyrics/'+searchTerm)
+          .then(response => response.text())
+          .then(lyric => {
+            lyricsDiv.innerHTML = lyric;
+          })
+          .catch(error => {
+            console.error(error);
+            lyricsDiv.innerHTML = '<p>There was an error retrieving the lyrics.</p>';
+          });
+      });
+    </script>
+  </body>
+</html>
